@@ -67,12 +67,15 @@ public class Money extends HttpFilter implements Filter {
 			if(rs.next()) {
 				Integer mon=rs.getInt(1);
 				Integer mon2=(Integer) session.getAttribute("fare");
-				response.setContentType("text/html");
-			    PrintWriter pwriter=response.getWriter(); 
-			    pwriter.println("");
+				if(mon<mon2) {
+					response.setContentType("text/html");
+				    PrintWriter pwriter=response.getWriter(); 
+				    pwriter.println("<center>Not enough money</center>");
+				    pwriter.println("<a href=\"book.html\">Go Back</a>");
+				}
 			   
 			}else {
-				response.sendRedirect("index.html");
+				System.out.println("Fine");
 			}
 		}catch (SQLException e) {
 			// TODO Auto-generated catch block
