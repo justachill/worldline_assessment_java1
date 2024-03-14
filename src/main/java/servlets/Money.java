@@ -54,28 +54,33 @@ public class Money extends HttpFilter implements Filter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HttpSession session=request.getSession(false);
-		System.out.println(session.getAttribute("uname"));
 		String username="root";
 		String pwd="";
 		try {
 			Connection con=DriverManager.getConnection(url,username,pwd);
 			String number=request.getParameter("train");
-			String query="Select wallet from login where username='"+session.getAttribute("uname")+"'";
+			String query="Select wallet from login where username='"+request.getParameter("usnm")+"'";
 			Statement st=con.createStatement();
 			ResultSet rs = st.executeQuery(query);
+			response.setContentType("text/html");
+		    PrintWriter pwriter=response.getWriter();
 			if(rs.next()) {
 				Integer mon=rs.getInt(1);
-				Integer mon2=(Integer) session.getAttribute("fare");
+				Integer mon2=Integer.parseInt(request.getParameter("fare"));
 				if(mon<mon2) {
-					response.setContentType("text/html");
-				    PrintWriter pwriter=response.getWriter(); 
 				    pwriter.println("<center>Not enough money</center>");
 				    pwriter.println("<a href=\"book.html\">Go Back</a>");
+				}else {
+					System.out.println("got");
+					query="UPDATE login SET wallet = wallet - "+mon2+" WHERE name = '"+request.getParameter("usnm")+"'";
+					st.execute(query);
+					query="UPDATE train SET "+request.getParameter("seat")+" = "+request.getParameter("seat")+" - 1 WHERE number = '"+request.getParameter("number")+"'";
+					st.execute(query);					
 				}
 			   
 			}else {
 				System.out.println("Fine");
+				//
 			}
 		}catch (SQLException e) {
 			// TODO Auto-generated catch block

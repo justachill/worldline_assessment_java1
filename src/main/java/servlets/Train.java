@@ -70,6 +70,8 @@ public class Train extends HttpServlet {
 			    pwriter.println("<input type=\"text\" name=\"seat\"><br/>");
 			    pwriter.println("Enter the name ");
 			    pwriter.println("<input type=\"text\" name=\"name\"><br/>");
+			    pwriter.println("<input type=\"hidden\" name=\"fare\" value="+rs.getInt(4)+"><br/>");
+			    pwriter.println("<input type=\"hidden\" name=\"usnm\" value="+session.getAttribute("uname")+"><br/>");
 			    pwriter.println("</br><input type=\"submit\" value=\"Book\">");
 			    pwriter.println("</center></form>");
 			    
